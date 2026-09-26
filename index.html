@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abu Hmaid Pro Workout</title>
-    <!-- إضافة أيقونة للتطبيق عند إضافته للشاشة الرئيسية -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#080808">
@@ -31,21 +30,9 @@
             padding-bottom: 80px;
         }
         
-        .info-banner {
-            background-color: #1a1a1a; color: #fff; text-align: center; padding: 12px;
-            border-radius: 8px; font-size: 13px; margin-bottom: 15px; border: 1px solid #333;
-        }
-        .header { text-align: center; padding: 10px 0 20px 0; border-bottom: 2px solid var(--primary); margin-bottom: 25px; }
+        .header { text-align: center; padding: 10px 0 20px 0; border-bottom: 2px solid var(--primary); margin-bottom: 35px; }
         .header h1 { margin: 0; font-size: 24px; color: var(--text-main); }
         .header p { color: var(--text-muted); font-size: 13px; margin: 8px 0 0 0; }
-        
-        .data-tools { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap;}
-        .tool-btn {
-            background-color: #1a1a1a; border: 1px solid #333; color: white;
-            padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: 0.2s;
-        }
-        .tool-btn:hover { background-color: #333; border-color: var(--primary); }
-        input[type="file"] { display: none; }
         
         .day-section { margin-bottom: 40px; }
         .day-title {
@@ -114,19 +101,9 @@
     </style>
 </head>
 <body>
-    <div class="info-banner">
-        💡 <b>نصيحة:</b> من إعدادات المتصفح اختر "Add to Home screen" عشان يشتغل كأبلكيشن أساسي على موبايلك!
-    </div>
-    
     <div class="header">
         <h1>Abu Hmaid Pro Workout</h1>
-        <p>Dynamic Sets • Auto-Sync • Cloud Local Save</p>
-    </div>
-    
-    <div class="data-tools">
-        <button class="tool-btn" onclick="exportData()">💾 حفظ نسخة احتياطية (JSON)</button>
-        <button class="tool-btn" onclick="document.getElementById('importFile').click()">📂 استرجاع البيانات</button>
-        <input type="file" id="importFile" accept=".json" onchange="importData(event)">
+        <p>Dynamic Sets • Auto-Sync • Local Save</p>
     </div>
 
     <div id="app"></div>
@@ -349,36 +326,6 @@
                     }
                 });
             });
-        }
-
-        function exportData() {
-            const data = JSON.stringify(localStorage);
-            const blob = new Blob([data], {type: "application/json"});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = "AbuHmaid_Workout_Backup.json";
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        function importData(event) {
-            const file = event.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    for (let key in data) {
-                        localStorage.setItem(key, data[key]);
-                    }
-                    alert("تم استرجاع البيانات بنجاح! سيتم تحديث الصفحة.");
-                    location.reload();
-                } catch(err) {
-                    alert("عذراً، ملف البيانات غير صالح.");
-                }
-            };
-            reader.readAsText(file);
         }
 
         window.onload = render;
