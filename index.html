@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abu Hmaid Pro Workout</title>
+    <!-- إضافة أيقونة للتطبيق عند إضافته للشاشة الرئيسية -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#080808">
+    <style>
+        :root {
+            --bg-color: #080808;
+            --card-bg: #121212;
+            --primary: #E53935;
+            --primary-hover: #c62828;
+            --text-main: #FFFFFF;
+            --text-muted: #888888;
+            --border-color: #222222;
+            --input-bg: #1a1a1a;
+            --input-focus: #2a2a2a;
+            --success: #4CAF50;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 15px;
+            padding-bottom: 80px;
+        }
+        
+        .info-banner {
+            background-color: #1a1a1a; color: #fff; text-align: center; padding: 12px;
+            border-radius: 8px; font-size: 13px; margin-bottom: 15px; border: 1px solid #333;
+        }
+        .header { text-align: center; padding: 10px 0 20px 0; border-bottom: 2px solid var(--primary); margin-bottom: 25px; }
+        .header h1 { margin: 0; font-size: 24px; color: var(--text-main); }
+        .header p { color: var(--text-muted); font-size: 13px; margin: 8px 0 0 0; }
+        
+        .data-tools { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap;}
+        .tool-btn {
+            background-color: #1a1a1a; border: 1px solid #333; color: white;
+            padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: 0.2s;
+        }
+        .tool-btn:hover { background-color: #333; border-color: var(--primary); }
+        input[type="file"] { display: none; }
+        
+        .day-section { margin-bottom: 40px; }
+        .day-title {
+            background: linear-gradient(90deg, #1A1A1A 0%, #252525 100%);
+            border-right: 5px solid var(--primary);
+            padding: 12px 20px; font-size: 20px; font-weight: bold;
+            border-radius: 6px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        .exercise-card {
+            background-color: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 10px; padding: 15px 20px; margin-bottom: 15px;
+            direction: ltr; text-align: left;
+        }
+        .ex-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;}
+        .ex-name { font-size: 17px; font-weight: bold; color: var(--text-main); }
+        .ex-reps {
+            background-color: #111; color: var(--success); padding: 4px 12px; 
+            border-radius: 20px; font-size: 13px; border: 1px solid #2e6031; font-weight: bold;
+        }
+        
+        .sets-container { display: flex; gap: 10px; flex-wrap: wrap; }
+        .set-box { display: flex; flex-direction: column; align-items: center; }
+        .set-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: bold;}
+        .weight-input {
+            width: 60px; height: 36px; background-color: var(--input-bg);
+            border: 1px solid var(--border-color); border-radius: 6px;
+            color: white; text-align: center; font-size: 15px; outline: none; transition: 0.2s; font-weight: bold;
+        }
+        .weight-input:focus { border-color: var(--primary); background-color: var(--input-focus); }
+        
+        .add-alt-btn {
+            background: #111; border: 1px solid #333; color: var(--primary); font-size: 18px; cursor: pointer;
+            width: 28px; height: 28px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            transition: 0.2s; padding: 0 0 2px 0; margin-left: 10px; font-weight: bold;
+        }
+        .add-alt-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .flex-row { display: flex; align-items: center; }
+        
+        .alt-section {
+            margin-top: 20px; padding-top: 15px; border-top: 1px dashed #333; display: none;
+            background-color: rgba(20,20,20, 0.4); padding: 15px; border-radius: 8px;
+        }
+        .alt-title { font-size: 13px; color: var(--primary); margin-bottom: 12px; font-weight: bold; display: flex; align-items: center; gap: 6px;}
+        .alt-setup { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; align-items: center;}
+        
+        .alt-input {
+            flex: 1; min-width: 120px; background-color: var(--input-bg); border: 1px solid #444;
+            color: white; padding: 8px 12px; border-radius: 6px; font-size: 13px; outline: none; transition: 0.2s;
+        }
+        .alt-input:focus { border-color: var(--primary); }
+        .alt-sets-input { width: 65px; flex: none; text-align: center;}
+        
+        .btn-generate {
+            background-color: var(--primary); color: white; border: none; padding: 8px 15px;
+            border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; font-size: 13px;
+        }
+        .btn-generate:hover { background-color: var(--primary-hover); }
+        .btn-remove { background-color: transparent; border: 1px solid #555; color: #aaa; margin-left: auto;}
+        .btn-remove:hover { background-color: #333; color: white; border-color: #333;}
+        
+        @media (max-width: 480px) {
+            .alt-input { min-width: 100%; }
+            .btn-remove { margin-left: 0; margin-top: 5px; width: 100%;}
+        }
+    </style>
+</head>
+<body>
+    <div class="info-banner">
+        💡 <b>نصيحة:</b> من إعدادات المتصفح اختر "Add to Home screen" عشان يشتغل كأبلكيشن أساسي على موبايلك!
+    </div>
+    
+    <div class="header">
+        <h1>Abu Hmaid Pro Workout</h1>
+        <p>Dynamic Sets • Auto-Sync • Cloud Local Save</p>
+    </div>
+    
+    <div class="data-tools">
+        <button class="tool-btn" onclick="exportData()">💾 حفظ نسخة احتياطية (JSON)</button>
+        <button class="tool-btn" onclick="document.getElementById('importFile').click()">📂 استرجاع البيانات</button>
+        <input type="file" id="importFile" accept=".json" onchange="importData(event)">
+    </div>
+
+    <div id="app"></div>
+
+    <script>
+        const exercisesData = [
+            { day: 'Anterior A جزء امامي أ', name: 'Machine Shoulder Press', sets: 1, reps: '6~8' },
+            { day: 'Anterior A جزء امامي أ', name: 'Chest Press Machine', sets: 3, reps: '6~10' },
+            { day: 'Anterior A جزء امامي أ', name: 'Hack Squat', sets: 2, reps: '5~8' },
+            { day: 'Anterior A جزء امامي أ', name: 'Machine Lateral Raises', sets: 3, reps: '6~8' },
+            { day: 'Anterior A جزء امامي أ', name: 'Overhead Extenstion', sets: 2, reps: '6~10' },
+            { day: 'Anterior A جزء امامي أ', name: 'Butterfly', sets: 1, reps: '6~10' },
+            { day: 'Anterior A جزء امامي أ', name: 'Lat Pulldown Crunches', sets: 2, reps: '6~10' },
+            { day: 'Anterior A جزء امامي أ', name: 'Leg Extenstion', sets: 1, reps: '8~12' },
+            { day: 'Posterior A جزء خلفي أ', name: 'T Bar Row', sets: 2, reps: '5~7' },
+            { day: 'Posterior A جزء خلفي أ', name: 'Machine Wide Grip Lat Pulldown', sets: 3, reps: '6~8' },
+            { day: 'Posterior A جزء خلفي أ', name: 'RDL', sets: 1, reps: '5~8' },
+            { day: 'Posterior A جزء خلفي أ', name: 'SA Rear Delt Flies', sets: 1, reps: '6~10' },
+            { day: 'Posterior A جزء خلفي أ', name: 'Seated Leg Curl', sets: 2, reps: '8~12' },
+            { day: 'Posterior A جزء خلفي أ', name: 'Preacher Curl Machine', sets: 2, reps: '6~10' },
+            { day: 'Posterior A جزء خلفي أ', name: 'Leg Press Calf Raises', sets: 2, reps: '5~7' },
+            { day: 'Posterior A جزء خلفي أ', name: 'Wrist Curls', sets: 2, reps: '6~10' },
+            { day: 'Anterior B جزء امامي ب', name: 'Incline Chest Press Machine', sets: 2, reps: '6~10' },
+            { day: 'Anterior B جزء امامي ب', name: 'Machine Shoulder Press', sets: 2, reps: '6~8' },
+            { day: 'Anterior B جزء امامي ب', name: 'Leg Extenstion', sets: 3, reps: '8~12' },
+            { day: 'Anterior B جزء امامي ب', name: 'Cable Lateral Raises', sets: 2, reps: '6~8' },
+            { day: 'Anterior B جزء امامي ب', name: 'SA Tricep Pushdown', sets: 3, reps: '6~10' },
+            { day: 'Anterior B جزء امامي ب', name: 'Pec deck', sets: 1, reps: '6~10' },
+            { day: 'Anterior B جزء امامي ب', name: 'Hip Adduction', sets: 1, reps: '6~8' },
+            { day: 'Anterior B جزء امامي ب', name: 'Reverse Grip Curls', sets: 2, reps: '6~10' },
+            { day: 'Posterior B جزء خلفي ب', name: 'T Bar Row', sets: 2, reps: '5~7' },
+            { day: 'Posterior B جزء خلفي ب', name: 'SA Lat Row', sets: 2, reps: '6~8' },
+            { day: 'Posterior B جزء خلفي ب', name: 'Face Away Curl', sets: 2, reps: '6~10' },
+            { day: 'Posterior B جزء خلفي ب', name: 'RDL', sets: 1, reps: '5~8' },
+            { day: 'Posterior B جزء خلفي ب', name: 'SA Rear Delt Flies', sets: 1, reps: '6~10' },
+            { day: 'Posterior B جزء خلفي ب', name: 'Cable Shrugs', sets: 1, reps: '6~10' },
+            { day: 'Posterior B جزء خلفي ب', name: 'Seated Leg Curl', sets: 2, reps: '8~12' },
+            { day: 'Posterior B جزء خلفي ب', name: 'Leg Press Calf Raises', sets: 2, reps: '5~7' }
+        ];
+
+        const app = document.getElementById('app');
+        const daysOrder = ["Anterior A جزء امامي أ", "Posterior A جزء خلفي أ", "Anterior B جزء امامي ب", "Posterior B جزء خلفي ب"];
+
+        function sanitizeKey(str) {
+            return str.trim().replace(/\W+/g, '_');
+        }
+
+        function render() {
+            let html = '';
+            daysOrder.forEach((day, dayIndex) => {
+                const dayExs = exercisesData.filter(e => e.day === day);
+                if (dayExs.length === 0) return;
+
+                html += `<div class="day-section"><div class="day-title">${day}</div>`;
+                
+                dayExs.forEach((ex, exIndex) => {
+                    const baseKey = sanitizeKey(ex.name);
+                    const uniqueId = `day${dayIndex}_ex${exIndex}`;
+
+                    let setsHtml = '';
+                    for(let i=0; i<ex.sets; i++) {
+                        const inputId = `set_${baseKey}_${i}`;
+                        setsHtml += `
+                            <div class="set-box">
+                                <span class="set-label">Set ${i+1}</span>
+                                <input type="number" class="weight-input sync-input" data-sync-id="${inputId}" oninput="saveAndSync(this)" placeholder="-">
+                            </div>`;
+                    }
+
+                    html += `
+                    <div class="exercise-card">
+                        <div class="ex-header">
+                            <span class="ex-name">${ex.name}</span>
+                            <div class="flex-row">
+                                <span class="ex-reps">${ex.reps}</span>
+                                <button class="add-alt-btn" onclick="toggleAlt('${uniqueId}')" title="Add Alternative Exercise">+</button>
+                            </div>
+                        </div>
+                        <div class="sets-container">${setsHtml}</div>
+                        
+                        <div class="alt-section" id="alt_sec_${uniqueId}">
+                            <div class="alt-title">↳ Alternative Exercise Setup</div>
+                            <div class="alt-setup" id="alt_setup_${uniqueId}">
+                                <input type="text" id="alt_name_${uniqueId}" class="alt-input sync-input-alt-name" data-base-ex="${baseKey}" placeholder="Exercise Name" oninput="saveAltConfig('${uniqueId}', '${baseKey}')">
+                                <input type="number" id="alt_sets_${uniqueId}" class="alt-input alt-sets-input" placeholder="Sets" min="1" max="10" oninput="saveAltConfig('${uniqueId}', '${baseKey}')">
+                                <input type="text" id="alt_reps_${uniqueId}" class="alt-input alt-sets-input" placeholder="Reps" oninput="saveAltConfig('${uniqueId}', '${baseKey}')">
+                                <button class="btn-generate" onclick="generateAltSets('${uniqueId}', '${baseKey}')">Generate</button>
+                                <button class="btn-generate btn-remove" onclick="removeAlt('${uniqueId}', '${baseKey}')">Remove</button>
+                            </div>
+                            <div class="sets-container" id="alt_sets_container_${uniqueId}"></div>
+                        </div>
+                    </div>`;
+                });
+                html += `</div>`;
+            });
+            app.innerHTML = html;
+            loadSavedData();
+        }
+
+        function saveAndSync(el) {
+            const syncId = el.getAttribute('data-sync-id');
+            const val = el.value;
+            try { localStorage.setItem(syncId, val); } catch(e) {}
+            
+            document.querySelectorAll(`[data-sync-id="${syncId}"]`).forEach(input => {
+                if (input !== el) input.value = val;
+            });
+        }
+
+        function toggleAlt(uniqueId) {
+            const sec = document.getElementById(`alt_sec_${uniqueId}`);
+            sec.style.display = sec.style.display === 'block' ? 'none' : 'block';
+            localStorage.setItem(`alt_visible_${uniqueId}`, sec.style.display);
+        }
+
+        function saveAltConfig(uniqueId, baseKey) {
+            const altName = document.getElementById(`alt_name_${uniqueId}`).value;
+            const altSets = document.getElementById(`alt_sets_${uniqueId}`).value;
+            const altReps = document.getElementById(`alt_reps_${uniqueId}`).value;
+            
+            localStorage.setItem(`alt_name_${baseKey}`, altName);
+            localStorage.setItem(`alt_sets_${baseKey}`, altSets);
+            localStorage.setItem(`alt_reps_${baseKey}`, altReps);
+            
+            syncAltConfigs(baseKey, altName, altSets, altReps);
+        }
+        
+        function syncAltConfigs(baseKey, altName, altSets, altReps) {
+            document.querySelectorAll(`[data-base-ex="${baseKey}"]`).forEach(input => {
+                const uid = input.id.replace('alt_name_', '');
+                document.getElementById(`alt_name_${uid}`).value = altName || '';
+                document.getElementById(`alt_sets_${uid}`).value = altSets || '';
+                document.getElementById(`alt_reps_${uid}`).value = altReps || '';
+            });
+        }
+
+        function generateAltSets(uniqueId, baseKey, autoLoad = false) {
+            const altName = document.getElementById(`alt_name_${uniqueId}`).value;
+            const numSets = parseInt(document.getElementById(`alt_sets_${uniqueId}`).value);
+            const container = document.getElementById(`alt_sets_container_${uniqueId}`);
+            
+            if (!altName || !numSets || isNaN(numSets)) {
+                if(!autoLoad) alert("Please enter the Alternative Exercise Name and Sets number correctly.");
+                return;
+            }
+
+            const safeAltName = sanitizeKey(altName);
+            
+            let setsHtml = '';
+            for(let i=0; i<numSets; i++) {
+                const inputId = `set_${safeAltName}_${i}`;
+                setsHtml += `
+                    <div class="set-box">
+                        <span class="set-label">Set ${i+1}</span>
+                        <input type="number" class="weight-input sync-input" data-sync-id="${inputId}" oninput="saveAndSync(this)" placeholder="-">
+                    </div>`;
+            }
+            
+            container.innerHTML = setsHtml;
+            localStorage.setItem(`alt_generated_${baseKey}`, 'true');
+
+            container.querySelectorAll('.sync-input').forEach(input => {
+                const val = localStorage.getItem(input.getAttribute('data-sync-id'));
+                if (val) input.value = val;
+            });
+            
+            if (!autoLoad) {
+                document.querySelectorAll(`[data-base-ex="${baseKey}"]`).forEach(input => {
+                    const uid = input.id.replace('alt_name_', '');
+                    if (uid !== uniqueId) {
+                        generateAltSets(uid, baseKey, true);
+                    }
+                });
+            }
+        }
+        
+        function removeAlt(uniqueId, baseKey) {
+            localStorage.removeItem(`alt_generated_${baseKey}`);
+            localStorage.removeItem(`alt_name_${baseKey}`);
+            localStorage.removeItem(`alt_sets_${baseKey}`);
+            localStorage.removeItem(`alt_reps_${baseKey}`);
+            
+            document.querySelectorAll(`[data-base-ex="${baseKey}"]`).forEach(input => {
+                const uid = input.id.replace('alt_name_', '');
+                document.getElementById(`alt_sets_container_${uid}`).innerHTML = '';
+                document.getElementById(`alt_name_${uid}`).value = '';
+                document.getElementById(`alt_sets_${uid}`).value = '';
+                document.getElementById(`alt_reps_${uid}`).value = '';
+            });
+        }
+
+        function loadSavedData() {
+            document.querySelectorAll('.sync-input:not(.alt-input)').forEach(input => {
+                const syncId = input.getAttribute('data-sync-id');
+                const savedVal = localStorage.getItem(syncId);
+                if (savedVal) input.value = savedVal;
+            });
+
+            daysOrder.forEach((day, dayIndex) => {
+                const dayExs = exercisesData.filter(e => e.day === day);
+                dayExs.forEach((ex, exIndex) => {
+                    const uniqueId = `day${dayIndex}_ex${exIndex}`;
+                    const baseKey = sanitizeKey(ex.name);
+                    
+                    const isVisible = localStorage.getItem(`alt_visible_${uniqueId}`);
+                    if (isVisible === 'block') {
+                        document.getElementById(`alt_sec_${uniqueId}`).style.display = 'block';
+                    }
+                    
+                    const savedAltName = localStorage.getItem(`alt_name_${baseKey}`);
+                    const savedAltSets = localStorage.getItem(`alt_sets_${baseKey}`);
+                    const savedAltReps = localStorage.getItem(`alt_reps_${baseKey}`);
+                    
+                    if (savedAltName) document.getElementById(`alt_name_${uniqueId}`).value = savedAltName;
+                    if (savedAltSets) document.getElementById(`alt_sets_${uniqueId}`).value = savedAltSets;
+                    if (savedAltReps) document.getElementById(`alt_reps_${uniqueId}`).value = savedAltReps;
+                    
+                    if (localStorage.getItem(`alt_generated_${baseKey}`) === 'true') {
+                        generateAltSets(uniqueId, baseKey, true);
+                    }
+                });
+            });
+        }
+
+        function exportData() {
+            const data = JSON.stringify(localStorage);
+            const blob = new Blob([data], {type: "application/json"});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "AbuHmaid_Workout_Backup.json";
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    for (let key in data) {
+                        localStorage.setItem(key, data[key]);
+                    }
+                    alert("تم استرجاع البيانات بنجاح! سيتم تحديث الصفحة.");
+                    location.reload();
+                } catch(err) {
+                    alert("عذراً، ملف البيانات غير صالح.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        window.onload = render;
+    </script>
+</body>
+</html>
